@@ -4,10 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import com.example.kotlincoroutines.databinding.ActivityMainBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding;
@@ -15,7 +12,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding=ActivityMainBinding.inflate(layoutInflater);
         setContentView(binding.root)
-        GlobalScope.launch(Dispatchers.IO) {
+        GlobalScope.launch(newSingleThreadContext("AboudTherd")) {
             Log.d("aboud", "ontherad:${Thread.currentThread().name} ")
             printmytext("hello")
         }
