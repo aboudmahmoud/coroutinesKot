@@ -12,14 +12,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding=ActivityMainBinding.inflate(layoutInflater);
         setContentView(binding.root)
-        GlobalScope.launch(newSingleThreadContext("AboudTherd")) {
-            Log.d("aboud", "ontherad:${Thread.currentThread().name} ")
-            printmytext("hello")
-        }
+        runBlocking { printmytext("aboud") }
+
     }
-    suspend fun printmytext(text:String)
+    suspend fun printmytext(textw:String)
     {
+        GlobalScope.launch {
         delay(2000);
-        Log.d("aboud", "text: "+text)
+            withContext(Dispatchers.Main)
+            {
+                binding.text.setText(textw)
+            }
+
+
+        }
     }
 }
