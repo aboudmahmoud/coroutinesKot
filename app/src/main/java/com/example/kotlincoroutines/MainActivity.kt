@@ -13,15 +13,21 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding=ActivityMainBinding.inflate(layoutInflater);
         setContentView(binding.root)
-       // runBlocking { printmytext("aboud") }
-        Log.d(TAG, "main therd")
-       runBlocking {
+      /* runBlocking {
             printmytext("aboud")
+           printmytext("aboud2")
+        }*/
+        GlobalScope.launch {
+            printmytext("aboud")
+            printmytext("aboud2")
         }
-        Log.d(TAG, " back to main therd")
+
+
+
     }
     suspend fun printmytext(textw:String)
-    { delay(2000)
+    {
+        delay(2000)
             // binding.text.setText(textw)
         Log.d(TAG, "The assowm is ${textw}")
     }
