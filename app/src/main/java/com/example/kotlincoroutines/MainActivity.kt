@@ -13,24 +13,44 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding=ActivityMainBinding.inflate(layoutInflater);
         setContentView(binding.root)
-      /* runBlocking {
-            printmytext("aboud")
-           printmytext("aboud2")
-        }*/
         GlobalScope.launch {
-            printmytext("aboud")
-            printmytext("aboud2")
+           /* val getdata = Database()
+            val getNetwrk=Networke()
+            if (getdata==getNetwrk)
+            {
+                Log.d(TAG, "They Are Equal")
+            }
+            else{
+                Log.d(TAG, "The Are Not Equal ")
+            }*/
+
+          val getdatabae=async { Database() }
+         val getNetwork=async { Networke()}
+            if (getdatabae.await()==getNetwork.await())
+            {
+                Log.d(TAG, "They Are Equal")
+            }
+            else{
+                Log.d(TAG, "The Are Not Equal ")
+            }
+
         }
-
-
 
     }
-    suspend fun printmytext(textw:String)
+   private suspend fun Database():String
     {
-        GlobalScope.launch {
+
             delay(2000)
             // binding.text.setText(textw)
-            Log.d(TAG, "The assowm is ${textw}")
-        }
+           return "aboud"
+
+    }
+    private suspend fun Networke():String
+    {
+
+        delay(3000)
+        // binding.text.setText(textw)
+       return "aboud"
+
     }
 }
