@@ -15,22 +15,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
        // runBlocking { printmytext("aboud") }
         Log.d(TAG, "main therd")
-        GlobalScope.launch {
+       runBlocking {
             printmytext("aboud")
         }
         Log.d(TAG, " back to main therd")
     }
     suspend fun printmytext(textw:String)
-    {
-        GlobalScope.launch {
-        delay(2000);
-            withContext(Dispatchers.Main)
-            {
+    { delay(2000)
             // binding.text.setText(textw)
-                Log.d(TAG, "The assowm is ${textw}")
-            }
-
-
-        }
+        Log.d(TAG, "The assowm is ${textw}")
     }
 }
