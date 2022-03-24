@@ -27,8 +27,10 @@ class MainActivity : AppCompatActivity() {
     }
     suspend fun printmytext(textw:String)
     {
-        delay(2000)
+        GlobalScope.launch {
+            delay(2000)
             // binding.text.setText(textw)
-        Log.d(TAG, "The assowm is ${textw}")
+            Log.d(TAG, "The assowm is ${textw}")
+        }
     }
 }
