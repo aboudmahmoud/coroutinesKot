@@ -6,6 +6,7 @@ import android.util.Log
 import com.example.kotlincoroutines.databinding.ActivityMainBinding
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flow
@@ -24,7 +25,9 @@ class MainActivity : AppCompatActivity() {
                     emit(i)
                     Log.d(TAG, "befor Filter ${i.toString()}")
                 }
-            }.filter { i: Int -> i < 5 }.collect {
+            }.filter { i: Int -> i < 5 }
+                //buffer() it will mahe only wait 3 secnd not 4 for the fillerd element
+                .buffer().collect {
                 delay(3000)
                 Log.d(TAG, "after Filter ${it.toString()}")
             }
