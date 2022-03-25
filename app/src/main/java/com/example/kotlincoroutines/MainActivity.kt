@@ -13,27 +13,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding=ActivityMainBinding.inflate(layoutInflater);
         setContentView(binding.root)
-        GlobalScope.launch {
-           /* val getdata = Database()
-            val getNetwrk=Networke()
-            if (getdata==getNetwrk)
-            {
-                Log.d(TAG, "They Are Equal")
-            }
-            else{
-                Log.d(TAG, "The Are Not Equal ")
-            }*/
-
-          val getdatabae=async { Database() }
-         val getNetwork=async { Networke()}
-            if (getdatabae.await()==getNetwork.await())
-            {
-                Log.d(TAG, "They Are Equal")
-            }
-            else{
-                Log.d(TAG, "The Are Not Equal ")
-            }
-
+        val Parentjob:Job= Job()
+        val job:Job=GlobalScope.launch(Parentjob) {
+           val child1= launch { Database() }
+            val child2=launch { Networke() }
+         /*   //this mean wait child1 to finsh
+            child1.join()
+            //this mean wait child2 to finsh
+            child2.join()
+            //so that 2000 + 3000 will wait 5000 + 2000 wait agin in lunsh method */
+            // or
+            joinAll(child1,child2)
+            launch { delay(2000) }
         }
 
     }
