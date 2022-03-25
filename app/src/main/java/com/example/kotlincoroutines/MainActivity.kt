@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import com.example.kotlincoroutines.databinding.ActivityMainBinding
 import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.Channel
 
 class MainActivity : AppCompatActivity() {
     val TAG:String = "aboud";
@@ -13,35 +14,24 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding=ActivityMainBinding.inflate(layoutInflater);
         setContentView(binding.root)
-        val Parentjob:Job= Job()
-        val job:Job=GlobalScope.launch(Parentjob) {
-           val child1= launch { Database() }
-            val child2=launch { Networke() }
-         /*   //this mean wait child1 to finsh
-            child1.join()
-            //this mean wait child2 to finsh
-            child2.join()
-            //so that 2000 + 3000 will wait 5000 + 2000 wait agin in lunsh method */
-            // or
-            joinAll(child1,child2)
-            launch { delay(2000) }
+        val kotlinChannel=Channel<String>()
+        val charlist= arrayOf("a","b","c","d")
+        runBlocking {
+            launch {
+                var count:Int=0
+                for (char in charlist)
+                {
+                    kotlinChannel.offer((char+" "+count))
+                    count++
+                //  delay(1)
+                }
+            }
+
+                for (char in kotlinChannel){
+                    Log.d(TAG, char)
+                }
+
         }
-
-    }
-   private suspend fun Database():String
-    {
-
-            delay(2000)
-            // binding.text.setText(textw)
-           return "aboud"
-
-    }
-    private suspend fun Networke():String
-    {
-
-        delay(3000)
-        // binding.text.setText(textw)
-       return "aboud"
 
     }
 }
