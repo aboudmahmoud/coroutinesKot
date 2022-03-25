@@ -6,6 +6,9 @@ import android.util.Log
 import com.example.kotlincoroutines.databinding.ActivityMainBinding
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flow
 
 class MainActivity : AppCompatActivity() {
     val TAG:String = "aboud";
@@ -14,24 +17,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding=ActivityMainBinding.inflate(layoutInflater);
         setContentView(binding.root)
-        val kotlinChannel=Channel<String>()
-        val charlist= arrayOf("a","b","c","d")
         runBlocking {
-            launch {
-                var count:Int=0
-                for (char in charlist)
-                {
-                    kotlinChannel.offer((char+" "+count))
-                    count++
-                //  delay(1)
+            flow<Int> {
+                for (i in 1..10) {
+                    delay(1000)
+                    emit(i)
+                    Log.d(TAG, "befor Filter ${i.toString()}")
                 }
+            }.filter { i: Int -> i < 5 }.collect {
+                delay(3000)
+                Log.d(TAG, "after Filter ${it.toString()}")
             }
-
-                for (char in kotlinChannel){
-                    Log.d(TAG, char)
-                }
-
         }
-
     }
 }
