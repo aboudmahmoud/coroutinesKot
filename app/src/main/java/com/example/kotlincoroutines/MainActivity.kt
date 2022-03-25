@@ -6,10 +6,7 @@ import android.util.Log
 import com.example.kotlincoroutines.databinding.ActivityMainBinding
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.buffer
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.*
 
 class MainActivity : AppCompatActivity() {
     val TAG:String = "aboud";
@@ -18,19 +15,30 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding=ActivityMainBinding.inflate(layoutInflater);
         setContentView(binding.root)
+
         runBlocking {
-            flow<Int> {
+        var flow1= flow<Int> {
                 for (i in 1..10) {
-                    delay(1000)
+
                     emit(i)
-                    Log.d(TAG, "befor Filter ${i.toString()}")
+
                 }
-            }.filter { i: Int -> i < 5 }
-                //buffer() it will mahe only wait 3 secnd not 4 for the fillerd element
-                .buffer().collect {
-                delay(3000)
-                Log.d(TAG, "after Filter ${it.toString()}")
             }
+            var flow2= flow<String> {
+                val list= listOf<String>("A","B","C","D")
+                for (i in list) {
+                    emit(i)
+
+                }
+
+            }
+            flow1.zip(flow2)
+            {
+                    a:Int,b:String->"$a:$b"
+            }.collect {
+                Log.d(TAG,  "$it")
+            }
+
         }
     }
 }
