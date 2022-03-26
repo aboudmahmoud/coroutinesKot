@@ -13,7 +13,8 @@ class MyViewModel: ViewModel() {
     public fun startime()
     {
         viewModelScope.launch {
-            for (i in 1..10)
+            val list= listOf<Int>(1,1,2,2,3,4,5,6,7,7,8,9,9,10)
+            for (i in list)
             {
                 _timerLiveData.value=i
                 delay(1000)
