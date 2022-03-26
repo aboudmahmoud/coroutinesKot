@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.kotlincoroutines.databinding.ActivityMainBinding
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
@@ -20,10 +21,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         timervieModel=ViewModelProvider(this).get(MyViewModel::class.java)
         timervieModel.startime()
-        timervieModel.timerLieData.observe(this, Observer {
-            binding.text.setText(it.toString())
-            Log.d(TAG, it.toString())
-        })
+        lifecycleScope.launchWhenStarted {
+            timervieModel.timerstateFlow.collect {
+                binding.text.setText(it.toString())
+                Log.d(TAG, it.toString())
 
+            }
+        }
         }
     }
